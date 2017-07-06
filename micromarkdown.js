@@ -189,7 +189,7 @@ var micromarkdown = {
       if (stra[0].substr(0, 1) === '!') {
         str = str.replace(stra[0], '<img src="' + stra[2] + '" alt="' + stra[1] + '" title="' + stra[1] + '" />');
       } else {
-        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(stra[2], strict) + 'href="' + stra[2] + '">' + stra[1] + '</a>');
+        str = str.replace(stra[0], '<a href="' + stra[2] + '">' + stra[1] + '</a>');
       }
     }
     while ((stra = micromarkdown.regexobject.mail.exec(str)) !== null) {
@@ -200,12 +200,12 @@ var micromarkdown = {
       if (repstr.indexOf('://') === -1) {
         repstr = 'http://' + repstr;
       }
-      str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(repstr, strict) + 'href="' + repstr + '">' + repstr.replace(/(https:\/\/|http:\/\/|mailto:|ftp:\/\/)/gmi, '') + '</a>');
+      str = str.replace(stra[0], '<a href="' + repstr + '">' + repstr.replace(/(https:\/\/|http:\/\/|mailto:|ftp:\/\/)/gmi, '') + '</a>');
     }
     while ((stra = micromarkdown.regexobject.reflinks.exec(str)) !== null) {
       helper1 = new RegExp('\\[' + stra[2] + '\\]: ?([^ \n]+)', "gi");
       if ((helper = helper1.exec(str)) !== null) {
-        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(helper[1], strict) + 'href="' + helper[1] + '">' + stra[1] + '</a>').replace(/^\s+|\s+$/g, '');
+        str = str.replace(stra[0], '<a href="' + helper[1] + '">' + stra[1] + '</a>').replace(/^\s+|\s+$/g, '');
         trashgc.push(helper[0]);
       }
     }
@@ -230,11 +230,11 @@ var micromarkdown = {
         repstr = 'https://alpha.app.net/' + stra[1];
         break;
       }
-      str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(repstr, strict) + 'href="' + repstr + '">' + stra[1] + '</a>');
+      str = str.replace(stra[0], '<a href="' + repstr + '">' + stra[1] + '</a>');
     }
     while ((stra = micromarkdown.regexobject.url2.exec(str)) !== null) {
       repstr = stra[1];
-      str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(repstr, strict) + 'href="' + repstr + '">' + repstr + '</a>');
+      str = str.replace(stra[0], '<a href="' + repstr + '">' + repstr + '</a>');
     }
 
     /* horizontal line */
@@ -375,20 +375,6 @@ var micromarkdown = {
     str = div.innerHTML;
     div = undefined;
     return str;
-  },
-  mmdCSSclass: function (str, strict) {
-    'use strict';
-    var urlTemp;
-    if ((str.indexOf('/') !== -1) && (strict !== true)) {
-      urlTemp = str.split('/');
-      if (urlTemp[1].length === 0) {
-        urlTemp = urlTemp[2].split('.');
-      } else {
-        urlTemp = urlTemp[0].split('.');
-      }
-      return 'class="mmd_' + urlTemp[urlTemp.length - 2].replace(/[^\w\d]/g, '') + urlTemp[urlTemp.length - 1] + '" ';
-    }
-    return '';
   }
 };
 
